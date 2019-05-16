@@ -12,4 +12,3 @@ module.exports = {
   redis: 'redis://localhost:6379',
   REDIS_PRODECT_PREFIX: 'fancystore'
 }
-xxx
