@@ -1,0 +1,32 @@
+{
+  "name": "fancy-store-server",
+  "version": "1.0.0",
+  "description": "fancy-store api server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/czero1995/fancy-store-server.git"
+  },
+  "author": "czero1995",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/czero1995/fancy-store-server/issues"
+  },
+  "homepage": "https://github.com/czero1995/fancy-store-server#readme",
+  "dependencies": {
+    "connect-redis": "^3.4.1",
+    "cookie-parser": "^1.4.4",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "express-session": "^1.15.6",
+    "ioredis": "^4.6.2",
+    "mongoose": "^5.4.19",
+    "node-uuid": "^1.4.8",
+    "qiniu": "^7.2.1",
+    "qn": "^1.3.0",
+    "utility": "^1.15.1"
+  }
+}
