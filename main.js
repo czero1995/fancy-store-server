@@ -1,23 +1,14 @@
 const express = require('express')
+const app = express()
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
 const redisStore = require('connect-redis')(session)
 const redis = require('./config/redis').redis
-const adminRouter = require('./app/controller/admin/index')
-const userRouter = require('./app/controller/user/index')
-const productRouter = require('./app/controller/product/index')
-const categoryRouter = require('./app/controller/category/index')
-const cartRouter = require('./app/controller/cart/index')
-const orderRouter = require('./app/controller/order/index')
-const addressRouter = require('./app/controller/address/index')
-const bannerRouter = require('./app/controller/banner/index')
-const qiniuToken = require('./app/controller/upload/token')
-const methods = ['get', 'post', 'put', 'delete']
-const model = require('./app/models/admin')
-const Admin = model.getModel('admin')
-var cors = require('cors')
-var app = express()
+const cors = require('cors')
+const router = require('./router/index.js')
+const authMiddleWare = require('./app/middleware/auth')
+const loginMiddleWare = require('./app/middleware/login')
 app.use(cookieParser('fancystore'))
 app.use(
   session({
@@ -51,87 +42,10 @@ app.use(
     maxAge: '1728000'
   })
 )
-app.use(function(req, res, next) {
-  let authRouter = [
-    '/api/cart/all',
-    '/api/cart/add',
-    '/api/cart/delete',
-    '/api/cart/update',
-    '/api/order/all',
-    '/api/order/add',
-    '/api/order/delete',
-    '/api/order/update',
-    '/api/user/logout',
-    '/api/user/info',
-    '/api/user/update',
-    '/api/address/add',
-    '/api/address/all'
-  ]
-  if (authRouter.includes(req.url)) {
-    if (req.session.userName) {
-      next()
-    } else {
-      return res.json({ code: -1, msg: '用户未登陆' })
-    }
-  } else {
-    next()
-  }
-})
-app.use(function(req, res, next) {
-  let adminRouter = [
-    '/api/address/delete',
-    '/api/product/delete',
-    '/api/product/add',
-    '/api/product/update',
-    '/api/category/delete',
-    '/api/category/add'
-  ]
-  if (adminRouter.includes(req.url)) {
-    if (req.session.admin) {
-      Admin.findById({ _id: req.session.admin }, function(err, doc) {
-        if (doc.roles.includes(0) || doc.roles.includes(1)) {
-          next()
-        } else {
-          return res.json({ code: -1, msg: '没有权限' })
-        }
-      })
-    } else {
-      return res.json({ code: -1, msg: '管理员未登陆' })
-    }
-  } else {
-    next()
-  }
-})
-for (let method of methods) {
-  app[method] = function(...data) {
-    if (method === 'get' && data.length === 1) return app.set(data[0])
+app.use(loginMiddleWare)
+app.use(authMiddleWare)
 
-    const params = []
-    for (let item of data) {
-      if (Object.prototype.toString.call(item) !== '[object AsyncFunction]') {
-        params.push(item)
-        continue
-      }
-      const handle = function(...data) {
-        const [req, res, next] = data
-        item(req, res, next)
-          .then(next)
-          .catch(next)
-      }
-      params.push(handle)
-    }
-    router[method](...params)
-  }
-}
-app.use('/api/user', userRouter)
-app.use('/api/product', productRouter)
-app.use('/api/category', categoryRouter)
-app.use('/api/cart', cartRouter)
-app.use('/api/order', orderRouter)
-app.use('/api/address', addressRouter)
-app.use('/api/banner', bannerRouter)
-app.use('/api/admin', adminRouter)
-app.use('/api/token', qiniuToken)
+app.use(router)
 app.use(function(err, req, res, next) {
   res.status(404)
   console.log('Error Happends ******', err.stack)
