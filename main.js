@@ -36,7 +36,7 @@ app.use(
   cors({
     origin: [
       // 'http://localhost:8080',
-      'http://admin.fancystore.cn'
+      'https://admin.fancystore.cn'
     ],
     credentials: true,
     maxAge: '1728000'
@@ -47,7 +47,7 @@ app.use(authMiddleWare)
 
 app.use(router)
 app.use(function(err, req, res, next) {
-  res.status(404)
+    res.json({ status: 405, err:err.stack })
   console.log('Error Happends ******', err.stack)
 })
 

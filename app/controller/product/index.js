@@ -5,6 +5,7 @@ const Product = model.getModel('product')
 const _filter = { detailInfo: 0, __v: 0 }
 const redisClient = require('../../../config/redis')
 const config = require('../../../config/config')
+const asyncMiddleware = require('../../middleware/asyncMiddleware')
 // 添加Product
 Router.post('/add', function(req, res) {
   const productInfo = req.body
@@ -22,12 +23,12 @@ Router.post('/add', function(req, res) {
 })
 
 //  获取Product
-Router.get('/all', async function(req, res) {
+Router.get('/all', asyncMiddleware(async (req, res, next) => {
   const pageNum = parseInt(req.query.pageNum) || 0
   const pageSize = parseInt(req.query.pageSize) || 10
-  let category = req.query.category || ''
+  const category = req.query.category || ''
   const categorySearch = category != '' ? { category: category } : null
-
+  
   Product.find(categorySearch, _filter)
 
     .skip(pageNum * pageSize)
@@ -41,8 +42,12 @@ Router.get('/all', async function(req, res) {
         res.json({ code: 1, result: item })
       }
     })
-})
-
+}))
+function timeout(ms) {
+  return new Promise((resolve) => {
+    setTimeot(resolve, ms);
+  });
+}
 //  获取内容详情
 Router.get('/detail', function(req, res) {
   // Product.findById({ _id: req.query.id }, function(err, doc) {
