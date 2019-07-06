@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+const compression = require('compression')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
@@ -9,6 +10,7 @@ const cors = require('cors')
 const router = require('./router/index.js')
 const authMiddleWare = require('./app/middleware/auth')
 const loginMiddleWare = require('./app/middleware/login')
+app.use(compression())
 app.use(cookieParser('fancystore'))
 app.use(
   session({
@@ -47,7 +49,7 @@ app.use(authMiddleWare)
 
 app.use(router)
 app.use(function(err, req, res, next) {
-    res.json({ status: 405, err:err.stack })
+  res.json({ status: 405, err: err.stack })
   console.log('Error Happends ******', err.stack)
 })
 
