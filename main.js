@@ -1,16 +1,13 @@
 const express = require('express')
 const app = express()
-const compression = require('compression')
-const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
 const redisStore = require('connect-redis')(session)
 const redis = require('./config/redis').redis
 const cors = require('cors')
 const router = require('./router/index.js')
-const authMiddleWare = require('./app/middleware/auth')
-const loginMiddleWare = require('./app/middleware/login')
-app.use(compression())
+
+
 app.use(cookieParser('fancystore'))
 app.use(
   session({
@@ -32,8 +29,6 @@ app.use(
   })
 )
 
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
 app.use(
   cors({
     origin: [
@@ -44,8 +39,7 @@ app.use(
     maxAge: '1728000'
   })
 )
-app.use(loginMiddleWare)
-app.use(authMiddleWare)
+
 
 
 app.use(router)

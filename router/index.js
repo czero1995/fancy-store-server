@@ -1,6 +1,8 @@
 const express = require('express')
 const app = express()
 const router = express.Router()
+const bodyParser = require('body-parser')
+const compression = require('compression')
 const adminRouter = require('../app/controller/admin/index')
 const userRouter = require('../app/controller/user/index')
 const productRouter = require('../app/controller/product/index')
@@ -11,6 +13,8 @@ const addressRouter = require('../app/controller/address/index')
 const bannerRouter = require('../app/controller/banner/index')
 const qiniuToken = require('../app/controller/upload/token')
 const initMididleware = require('../app/middleware/InitMiddleware')
+const authMiddleWare = require('../app/middleware/auth')
+const loginMiddleWare = require('../app/middleware/login')
 const methods = ['get', 'post', 'put', 'delete']
 // for (let method of methods) {
 //   app[method] = function(...data) {
@@ -33,7 +37,12 @@ const methods = ['get', 'post', 'put', 'delete']
 //     router[method](...params)
 //   }
 // }
+router.use(compression())
+router.use(loginMiddleWare)
+router.use(authMiddleWare)
 router.use(initMididleware)
+router.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+router.use(bodyParser.json({limit: '50mb'}));
 router.use('/api/user', userRouter)
 router.use('/api/product', productRouter)
 router.use('/api/category', categoryRouter)
