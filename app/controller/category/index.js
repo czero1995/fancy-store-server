@@ -31,6 +31,7 @@ Router.post('/add', function(req, res) {
 
 //  获取Category
 Router.get('/all', async function(req, res) {
+  console.log('进入这里')
   getCategoryRedis(function(err, doc) {
     if (err) return res.json({ code: 0, msg: 'error' })
     if (!doc) {

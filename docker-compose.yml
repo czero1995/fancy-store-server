@@ -1,0 +1,15 @@
+app:
+  build: .
+  volumes:
+    - .:/src
+  links:
+    - mongo
+    - redis
+  ports:
+    - 3000:3000
+
+redis:
+  image: redis
+
+mongo:
+  image: mongo

@@ -26,7 +26,7 @@ Router.post('/add', function(req, res) {
 Router.get('/all', asyncMiddleware(async (req, res, next) => {
   const pageNum = parseInt(req.query.pageNum) || 0
   const pageSize = parseInt(req.query.pageSize) || 10
-  const category = req.query.category || ''
+  const categorysa = req.query.category || ''
   const categorySearch = category != '' ? { category: category } : null
   
   Product.find(categorySearch, _filter)
