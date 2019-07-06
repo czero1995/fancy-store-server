@@ -10,28 +10,30 @@ const orderRouter = require('../app/controller/order/index')
 const addressRouter = require('../app/controller/address/index')
 const bannerRouter = require('../app/controller/banner/index')
 const qiniuToken = require('../app/controller/upload/token')
+const initMididleware = require('../app/middleware/InitMiddleware')
 const methods = ['get', 'post', 'put', 'delete']
-for (let method of methods) {
-  app[method] = function(...data) {
-    if (method === 'get' && data.length === 1) return app.set(data[0])
+// for (let method of methods) {
+//   app[method] = function(...data) {
+//     if (method === 'get' && data.length === 1) return app.set(data[0])
 
-    const params = []
-    for (let item of data) {
-      if (Object.prototype.toString.call(item) !== '[object AsyncFunction]') {
-        params.push(item)
-        continue
-      }
-      const handle = function(...data) {
-        const [req, res, next] = data
-        item(req, res, next)
-          .then(next)
-          .catch(next)
-      }
-      params.push(handle)
-    }
-    router[method](...params)
-  }
-}
+//     const params = []
+//     for (let item of data) {
+//       if (Object.prototype.toString.call(item) !== '[object AsyncFunction]') {
+//         params.push(item)
+//         continue
+//       }
+//       const handle = function(...data) {
+//         const [req, res, next] = data
+//         item(req, res, next)
+//           .then(next)
+//           .catch(next)
+//       }
+//       params.push(handle)
+//     }
+//     router[method](...params)
+//   }
+// }
+router.use(initMididleware)
 router.use('/api/user', userRouter)
 router.use('/api/product', productRouter)
 router.use('/api/category', categoryRouter)

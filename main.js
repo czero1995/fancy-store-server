@@ -47,6 +47,7 @@ app.use(
 app.use(loginMiddleWare)
 app.use(authMiddleWare)
 
+
 app.use(router)
 app.use(function(err, req, res, next) {
   res.json({ status: 405, err: err.stack })

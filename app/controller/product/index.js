@@ -26,22 +26,15 @@ Router.post('/add', function(req, res) {
 Router.get('/all', asyncMiddleware(async (req, res, next) => {
   const pageNum = parseInt(req.query.pageNum) || 0
   const pageSize = parseInt(req.query.pageSize) || 10
-  const categorysa = req.query.category || ''
+  const category = req.query.category || ''
   const categorySearch = category != '' ? { category: category } : null
   
-  Product.find(categorySearch, _filter)
-
+  let data = await Product.find(categorySearch, _filter)
     .skip(pageNum * pageSize)
     .limit(pageSize)
     .sort({ id: -1 })
-    .exec(function(err, item) {
-      if (err) {
-        res.json({ code: 0, msg: '后端出错' })
-      } else {
-        item.category = item.category
-        res.json({ code: 1, result: item })
-      }
-    })
+  // res.json({ code: 1, result: data })
+  res.apiResponse(data)
 }))
 function timeout(ms) {
   return new Promise((resolve) => {
