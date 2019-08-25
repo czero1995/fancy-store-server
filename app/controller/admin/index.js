@@ -1,8 +1,7 @@
 const express = require('express')
 const utils = require('utility') // md5加密算法
 const Router = express.Router()
-const model = require('../../models/admin')
-const Admin = model.getModel('admin')
+const Admin = require('../../models/admin.js')
 const _filter = { pwd: 0, __v: 0 }
 //  注册
 // Router.post('/register', function(req, res) {
@@ -40,8 +39,6 @@ Router.post('/login', function(req, res) {
       return res.json({ code: 1, msg: '密码错误' })
     }
   })
-
-    
 })
 
 // 获取登录信息

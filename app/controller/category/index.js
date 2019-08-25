@@ -1,9 +1,6 @@
 const express = require('express')
 const Router = express.Router()
-const modelCategory = require('../../models/category')
-const model = require('../../models/product')
-const Category = modelCategory.getModel('category')
-const Product = model.getModel('product')
+const Category = require('../../models/category.js')
 const redisClient = require('../../../config/redis')
 const config = require('../../../config/config')
 

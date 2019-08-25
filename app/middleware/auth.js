@@ -1,5 +1,4 @@
-const model = require('../models/admin')
-const Admin = model.getModel('admin')
+const Admin = require('../models/admin')
 const authMiddleWare = function(req, res, next) {
   let authRouter = [
     '/api/product/delete',

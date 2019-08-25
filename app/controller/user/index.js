@@ -2,7 +2,7 @@ const express = require('express')
 const utils = require('utility') // md5加密算法
 const Router = express.Router()
 const model = require('../../models/user')
-const User = model.getModel('user')
+const User = require('../../models/user.js')
 const _filter = { pwd: 0, __v: 0 }
 //  注册
 Router.post('/register', function(req, res) {

@@ -1,7 +1,6 @@
 const express = require('express')
 const Router = express.Router()
-const model = require('../../models/banner')
-const Banner = model.getModel('banner')
+const Banner = require('../../models/banner.js')
 Router.post('/add', function(req, res) {
   const info = req.body
   Banner.findOne({ title: info.title }, function(err, doc) {

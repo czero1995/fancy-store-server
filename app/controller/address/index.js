@@ -1,7 +1,6 @@
 const express = require('express')
 const Router = express.Router()
-const modelUser = require('../../models/user')
-const User = modelUser.getModel('user')
+const User = require('../../models/user.js')
 const uuid = require('node-uuid')
 // 添加
 Router.post('/add', function(req, res) {

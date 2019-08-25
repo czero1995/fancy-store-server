@@ -1,11 +1,8 @@
 const express = require('express')
 const Router = express.Router()
-const modelUser = require('../../models/user')
-const modelCart = require('../../models/cart')
-const model = require('../../models/product')
-const Cart = modelCart.getModel('cart')
-const Product = model.getModel('product')
-const User = modelUser.getModel('user')
+const Cart = require('../../models/cart.js')
+const Product = require('../../models/product.js')
+const User = require('../../models/user.js')
 const _filter = { detailInfo: 0, __v: 0 }
 const uuid = require('node-uuid')
 // 添加

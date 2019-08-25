@@ -1,19 +1,7 @@
-const mongoose = require('mongoose')
-const config = require('../../config/config')
-mongoose.connect(config.dbConnect)
+const mongoose = require('./index.js')
 
-const models = {
-  category: {
-    title: { type: String, require: true }
-  }
-}
+const CategorySchema = mongoose.Schema({
+  title: { type: String, require: true }
+})
 
-for (let m in models) {
-  mongoose.model(m, new mongoose.Schema(models[m]))
-}
-
-module.exports = {
-  getModel: function(name) {
-    return mongoose.model(name)
-  }
-}
+module.exports = mongoose.model('category', CategorySchema)
