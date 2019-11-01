@@ -2,7 +2,7 @@
 .project
 package-lock.json
 .DS_Store
-# /config/config.js
+/src/config/config.js
 /dist
 /logs
 /log
