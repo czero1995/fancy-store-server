@@ -1,0 +1,16 @@
+{
+	"apps": {
+		"name": "fancy-store-server",
+		"script": "./dist/src/main.js",
+		"exec_interpreter": "bash",
+		"min_uptime": "60s",
+		"max_restarts": 30,
+		"merge_logs": true,
+		"exec_mode": "cluster_mode",
+		"error_file": "./logs/pm2_error_file.log",
+		"out_file": "./logs/pm2_out_file.log",
+		"pid_file": "./logs/pm2_pid_file.pid",
+		"watch": false,
+		"ignore_watch": ["[\\/\\\\]\\./", "node_modules"]
+	}
+}

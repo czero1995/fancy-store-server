@@ -1,0 +1,5 @@
+{
+  "restartable": "rs",
+  "verbose": true,
+  "ignore": [".git", "node_modules", "log", "test", "coverage", "jest.config.js"]
+}

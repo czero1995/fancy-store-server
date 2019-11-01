@@ -2,4 +2,8 @@
 .project
 package-lock.json
 .DS_Store
-/config/config.js
+# /config/config.js
+/dist
+/logs
+/log
+/coverage

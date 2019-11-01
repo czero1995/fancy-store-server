@@ -1,0 +1,45 @@
+{
+  "compilerOptions": {
+    "target": "es6", //将编译的.ts文件编译为指定标准js
+    "module": "commonjs", //模块规范
+    "allowJs": true,
+    // "strict": true,
+    "noImplicitAny": false,
+    "sourceMap": false, //生成资源映射，以便于调试
+    "noEmitHelpers": true, //不生成辅助方法，对应importHelpers
+    "importHelpers": true, //引用外部的辅助方法
+    "allowUnreachableCode": true, //允许代码中途return产生无法执行代码
+    "esModuleInterop": true, // 允许从没有设置默认导出的模块中默认导出。这并不影响代码的输出，仅为了类型检查
+    "removeComments": true, // 删除编译后的所有的注释
+    // "declaration": true,
+    // "noEmit": true, // 不生成输入文件
+    "lib": ["es6"], //定义编译时依赖
+    "typeRoots": ["node_modules/@types"], //定义类型定义文件的根目录
+    "outDir": "./dist", //编译输出文件目录，默认等于rootDir
+    // "rootDir": "./src", //源代码目录在这个目录里编写你的ts文件
+    "baseUrl": "./",
+    "strictNullChecks": true,
+
+    /* 额外的检查 */
+    "noUnusedLocals": false, // 有未使用的变量时，抛出错误
+    "noUnusedParameters": false, // 有未使用的参数时，抛出错误
+    "noImplicitReturns": false, // 并不是所有函数里的代码都有返回值时，抛出错误
+    "noFallthroughCasesInSwitch": false, // 报告 switch 语句的 fallthrough 错误。（即，不允许 switch 的 case 语句贯穿）
+    "moduleResolution": "node",
+    "paths": {
+      "@config/*": ["src/config/*"],
+      "@lib/*": ["src/lib/*"],
+      "@controller/*": ["src/app/controller/*"],
+      "@helper/*": ["src/app/helper/*"],
+      "@middleware/*": ["src/app/middleware/*"],
+      "@model/*": ["src/app/model/*"],
+      "@service/*": ["src/app/service/*"],
+      "@util/*": ["src/app/util/*"]
+    }
+  },
+  "exclude": [
+    "node_modules", //忽略目录
+    "dist",
+    "**/*.test.ts" //忽略指定类型文件
+  ]
+}
