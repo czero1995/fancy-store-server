@@ -8,8 +8,10 @@ import loginMiddleWare from "@middleware/LoginMiddleWare";
 import chalk from "chalk";
 // import logger from '@lib/logger'
 import router from "./router";
+import { similarity } from "util-snippets";
 const app = express();
-
+let a = similarity([1, 2, 3, 4], [2, 3, 4]);
+console.log("a: ", a);
 connect();
 
 app.use(sessionRedisMiddleware);

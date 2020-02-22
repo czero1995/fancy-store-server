@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 
 const AddressSchema = new mongoose.Schema({
   uid: { type: Number, index: true, unique: true },
-  userId: { type: Number, index: true },
+  userId: { type: Number },
   name: { type: String, required: true },
   tel: { type: Number, required: true },
   post: { type: Number },

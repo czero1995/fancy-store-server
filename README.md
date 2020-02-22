@@ -30,4 +30,7 @@
 
 ### 4.启动服务
 
-    node main.js
+    npm run tsc:w   // 编译TypeScript
+    npm run start   // 启动项目
+    npm run build   // pm2守护进程开启项目(用于正式环境部署)
+

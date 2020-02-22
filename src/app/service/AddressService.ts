@@ -21,6 +21,8 @@ export default class AddressService {
     veifyField(verifyObject);
 
     paramsInfo.uid = await UidHelper("address");
+    console.log("paramsInfo.uid: ", paramsInfo.uid);
+    console.log("req.headers.userid: ", req.headers.userid);
     paramsInfo.userId = req.headers.userid;
     paramsInfo.created = Date.now();
     paramsInfo.updated = Date.now();

@@ -48,8 +48,8 @@ export default class CartService {
   public async delete(req) {
     const paramsInfo = req.body;
     checkProductId(paramsInfo);
-    await this.cartRepo.deleteMany({
-      uid: { $in: paramsInfo.productId },
+    await this.cartRepo.remove({
+      productId: paramsInfo.productId,
       userId: req.headers.userid
     });
     return { code: 0, msg: "删除成功" };
