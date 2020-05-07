@@ -38,9 +38,7 @@ export default class ProductService {
     const pageNum = parseInt(req.query.pageNum, 10) || 0;
     const pageSize = parseInt(req.query.pageSize, 10) || 10;
     const queruParam: any = {};
-    if (req.query.category && req.query.category.length > 0) {
-      queruParam.category = req.query.category;
-    }
+    queruParam.categoryUid = req.query.categoryUid;
 
     return await this.productRepo
       .find(queruParam, { detailInfo: 0 })

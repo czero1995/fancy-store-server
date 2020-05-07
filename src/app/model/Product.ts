@@ -8,6 +8,7 @@ const ProductSchema = new mongoose.Schema({
   priceOrigin: { type: String },
   imgCover: { type: String },
   category: { type: String },
+  categoryUid: { type: Number },
   order: { type: Number, default: 1 },
   created: { type: Date, required: true },
   updated: { type: Date, required: true }

@@ -39,12 +39,12 @@ export default class CategoryService {
   public async all() {
     let data = await this.redisProvider.smembers(REDIS_KEY);
     if (data.length > 0) {
-      return data.map(item => JSON.parse(item));
+      // return data.map(item => JSON.parse(item));
     }
 
-    data = await this.categoryRepo.find().sort({ uid: 1 });
+    data = await this.categoryRepo.find().sort({ order: -1 });
     data.map(item => {
-      this.redisProvider.sadd(REDIS_KEY, JSON.stringify(item));
+      this.redisProvider.zadd(REDIS_KEY, JSON.stringify(item));
     });
     await this.redisProvider.expire(REDIS_KEY, 3600);
     return data;
