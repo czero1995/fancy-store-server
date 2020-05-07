@@ -8,7 +8,7 @@
   "author": "czero1995",
   "license": "MIT",
   "scripts": {
-    "start": "cross-env NODE_ENV=dev nodemon ./dist/src/main.js",
+    "start": "npm run tsc && cross-env NODE_ENV=dev nodemon ./dist/src/main.js",
     "dev": "ts-node-dev --clear ./src/main.ts",
     "build": "npm run tsc && cross-env NODE_ENV=production pm2 start pm2.json",
     "tsc": "tsc",
