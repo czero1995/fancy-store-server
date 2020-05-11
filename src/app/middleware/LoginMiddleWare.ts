@@ -1,4 +1,10 @@
-const LoginMiddleWare = function(req, res, next) {
+import config from "@config/config";
+import RedisProvider from "@middleware/RedisProvider";
+import Redis from "@config/redis";
+const REDIS_KEY = `${config.REDIS_PRODECT_PREFIX}:sessionId`;
+const redisProvider = new RedisProvider(Redis);
+import { decrypt } from "@util/Util";
+const LoginMiddleWare = async function(req, res, next) {
   const loginRouter = [
     "/api/cart/all",
     "/api/cart/add",
@@ -12,10 +18,16 @@ const LoginMiddleWare = function(req, res, next) {
     "/api/user/info",
     "/api/user/update",
     "/api/address/add",
-    "/api/address/all"
+    "/api/address/all",
+    "/api/category/all"
   ];
   if (loginRouter.includes(req.url)) {
-    if (req.session.userName) {
+    if (!req.headers.sessionid) {
+      return res.json({ code: -1, msg: "用户未登陆" });
+    }
+    const sessionId = req.headers.sessionid;
+    const redisValue = await redisProvider.get(REDIS_KEY + sessionId);
+    if (redisValue && redisValue === decrypt(sessionId)) {
       next();
     } else {
       return res.json({ code: -1, msg: "用户未登陆" });

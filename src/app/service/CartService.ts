@@ -1,7 +1,6 @@
 import UidHelper from "@helper/UidHelper";
 import VerificationHelper from "@helper/VerificationHelper";
-import { veifyField } from "@util/Util";
-
+import { decrypt, veifyField } from "@util/Util";
 export default class CartService {
   protected cartRepo: any;
   protected productRepo: any;
@@ -12,9 +11,10 @@ export default class CartService {
   public async add(req) {
     const paramsInfo = req.body;
     checkProductId(paramsInfo);
+    const userId = decrypt(req.headers.sessionid);
     const isExist = await this.cartRepo.findOne({
       productId: paramsInfo.productId,
-      userId: req.headers.userid
+      userId
     });
     if (isExist) {
       isExist.num = isExist.num + 1;
@@ -22,7 +22,7 @@ export default class CartService {
       return { code: 0, msg: "添加成功" };
     }
     paramsInfo.uid = await UidHelper("Cart");
-    paramsInfo.userId = req.headers.userid;
+    paramsInfo.userId = userId;
     paramsInfo.productId = req.body.productId;
     paramsInfo.created = Date.now();
     paramsInfo.updated = Date.now();
@@ -34,9 +34,10 @@ export default class CartService {
   public async cut(req) {
     const paramsInfo = req.body;
     checkProductId(paramsInfo);
+    const userId = decrypt(req.headers.sessionid);
     const isExist = await this.cartRepo.findOne({
       productId: paramsInfo.productId,
-      userId: req.headers.userid
+      userId
     });
     if (isExist.num > 1) {
       isExist.num = isExist.num - 1;
@@ -47,10 +48,11 @@ export default class CartService {
 
   public async delete(req) {
     const paramsInfo = req.body;
+    const userId = decrypt(req.headers.sessionid);
     checkProductId(paramsInfo);
     await this.cartRepo.remove({
       productId: paramsInfo.productId,
-      userId: req.headers.userid
+      userId
     });
     return { code: 0, msg: "删除成功" };
   }
@@ -64,15 +66,14 @@ export default class CartService {
           foreignField: "uid",
           as: "productItems"
         }
+      },
+      {
+        $match: { userId: decrypt(req.headers.sessionid) }
       }
     ]);
     data.map(item => {
       item.productItems = item.productItems[0];
-      // item.title = item.productItems[0].title
-      // item.imgCover = item.productItems[0].imgCover
-      // item.priceNow = item.productItems[0].priceNow
     });
-
     return data;
   }
 }

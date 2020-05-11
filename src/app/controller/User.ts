@@ -2,7 +2,8 @@ import express from "express";
 import User from "@model/User";
 import UserService from "@service/UserService";
 const Router = express.Router();
-const userService = new UserService(User);
+import Redis from "@config/redis";
+const userService = new UserService(User, Redis);
 Router.post("/register", async (req, res) => {
   try {
     const data = await userService.register(req);

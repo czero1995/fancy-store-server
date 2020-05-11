@@ -21,8 +21,6 @@
     "no-unused-expression": [true, "allow-fast-null-checks"], // 不允许使用未使用的表达式
     "no-var-keyword": true, // 不允许使用var
     "radix": true, // parseInt时，必须输入radix精度参数
-
-    "indent": [true, "tabs", 4], // 每行开始以4个空格符开始
     "linebreak-style": [true, "CR/LF"], // 换行符格式 CR/LF可以通用使用在windows和osx
     "max-file-line-count": [true, 500], // 定义每个文件代码行数
     "max-line-length": [true, 120], // 定义每行代码数
@@ -45,7 +43,6 @@
     "ordered-imports": false, // 要求将import语句按字母顺序排列并分组
     "object-literal-sort-keys": false,
 
-    "quotemark": [true, "single", "avoid-escape"],
     "trailing-comma": [false, { "multiline": "always", "singleline": "never" }],
     "variable-name": [true, "allow-pascal-case", "allow-leading-underscore", "ban-keywords", "check-format"]
   }

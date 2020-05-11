@@ -1,6 +1,6 @@
 import UidHelper from "@helper/UidHelper";
 import VerificationHelper from "@helper/VerificationHelper";
-import { checkUid, veifyField } from "@util/Util";
+import { checkUid, veifyField, decrypt } from "@util/Util";
 export default class OrderService {
   protected orderRepo: any;
   protected productRepo: any;
@@ -10,6 +10,7 @@ export default class OrderService {
   }
   public async add(req: any) {
     const paramsInfo = req.body;
+    const userId = decrypt(req.headers.sessionid);
     const verifyObject = {
       productIds: VerificationHelper.checkArrayNotEmpty(
         paramsInfo.productIds,
@@ -22,7 +23,7 @@ export default class OrderService {
     };
     veifyField(verifyObject);
     paramsInfo.uid = await UidHelper("Order");
-    paramsInfo.userId = req.headers.userid;
+    paramsInfo.userId = userId;
     paramsInfo.productIds = paramsInfo.productIds;
     paramsInfo.created = Date.now();
     paramsInfo.updated = Date.now();
@@ -33,7 +34,7 @@ export default class OrderService {
 
   public async all(req) {
     const queryParams: any = {
-      userId: req.headers.userid
+      userId: decrypt(req.headers.sessionid)
     };
     req.query.status && (queryParams.status = req.query.status);
 

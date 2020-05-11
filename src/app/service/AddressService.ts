@@ -1,6 +1,6 @@
 import UidHelper from "@helper/UidHelper";
 import VerificationHelper from "@helper/VerificationHelper";
-import { checkUid, veifyField } from "@util/Util";
+import { checkUid, veifyField, decrypt } from "@util/Util";
 
 export default class AddressService {
   protected addressRepo: any;
@@ -21,16 +21,14 @@ export default class AddressService {
     veifyField(verifyObject);
 
     paramsInfo.uid = await UidHelper("address");
-    console.log("paramsInfo.uid: ", paramsInfo.uid);
-    console.log("req.headers.userid: ", req.headers.userid);
-    paramsInfo.userId = req.headers.userid;
+    paramsInfo.userId = decrypt(req.headers.sessionid);
     paramsInfo.created = Date.now();
     paramsInfo.updated = Date.now();
     const model = await new this.addressRepo(paramsInfo);
     await model.save();
     if (paramsInfo.isDefault) {
       const data = await this.addressRepo.findOne({
-        userid: req.hearders.userid,
+        userid: decrypt(req.headers.sessionid),
         isDefault: false
       });
       if (data) {
@@ -42,7 +40,9 @@ export default class AddressService {
   }
 
   public async all(req) {
-    return await this.addressRepo.find({ userId: req.headers.userid });
+    return await this.addressRepo.find({
+      userId: decrypt(req.headers.sessionid)
+    });
   }
 
   public async update(req) {

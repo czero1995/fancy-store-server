@@ -6,16 +6,18 @@ import sessionRedisMiddleware from "@middleware/SessionRedisMiddleware";
 import connectMiddleware from "@middleware/ConnectMiddleware";
 import loginMiddleWare from "@middleware/LoginMiddleWare";
 import chalk from "chalk";
-import cors from 'cors';
+import cors from "cors";
 // import logger from '@lib/logger'
 import router from "./router";
 const app = express();
 connect();
 
-app.use(cors({
-  origin: ['http://uni.fancystore.cn'],
+app.use(
+  cors({
+    origin: ["http://uni.fancystore.cn"],
     credentials: true
-    }))
+  })
+);
 
 app.use(sessionRedisMiddleware);
 app.use(connectMiddleware);

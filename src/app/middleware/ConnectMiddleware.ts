@@ -4,7 +4,7 @@ import chalk from "chalk";
 export default function responseTime(req, res, next) {
   const startTime: any = new Date();
   const requestTime: any = moment(startTime).format("YYYY-MM-DD HH:mm:ss");
-  const requestUrl: any = `${req.protocol}://${req.host}:${config.serverPort}${req.url}`;
+  const requestUrl: any = `${req.protocol}://${req.hostname}:${config.serverPort}${req.url}`;
   const calResponseTime = function() {
     const finishTime: any = new Date();
     const responseTime: any = finishTime - startTime + "ms";
