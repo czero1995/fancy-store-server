@@ -18,8 +18,8 @@ const LoginMiddleWare = async function(req, res, next) {
     "/api/user/info",
     "/api/user/update",
     "/api/address/add",
-    "/api/address/all",
-    "/api/category/all"
+    "/api/address/all"
+    // "/api/category/all"
   ];
   if (loginRouter.includes(req.url)) {
     if (!req.headers.sessionid) {
