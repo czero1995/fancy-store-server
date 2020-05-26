@@ -14,7 +14,11 @@ connect();
 
 app.use(
   cors({
-    origin: ["http://uni.fancystore.cn", "http://nuxt.fancystore.cn"],
+    origin: [
+      "http://uni.fancystore.cn",
+      "http://nuxt.fancystore.cn",
+      "http://baseadmin.fancystore.cn"
+    ],
     credentials: true
   })
 );
