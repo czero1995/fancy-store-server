@@ -5,6 +5,7 @@ import connect from "@lib/mongoose";
 import sessionRedisMiddleware from "@middleware/SessionRedisMiddleware";
 import connectMiddleware from "@middleware/ConnectMiddleware";
 import loginMiddleWare from "@middleware/LoginMiddleWare";
+import authMiddleWare from "@middleware/AuthMiddleWare";
 import chalk from "chalk";
 import cors from "cors";
 // import logger from '@lib/logger'
@@ -26,7 +27,7 @@ app.use(
 app.use(sessionRedisMiddleware);
 app.use(connectMiddleware);
 app.use(loginMiddleWare);
-// app.use(AuthMiddleware)
+app.use(authMiddleWare);
 app.use(router);
 
 app.use(function(err, req, res, next) {
