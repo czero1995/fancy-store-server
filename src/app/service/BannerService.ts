@@ -31,18 +31,22 @@ export default class BannerService {
     const model = new this.bannerRepo(paramsInfo);
     const data = await model.save();
     await this.redisProvider.sadd(REDIS_KEY, JSON.stringify(data));
-    return { code: 0, msg: "添加成功" };
+    return { code: 0, data };
   }
 
-  public async all() {
+  public async all(req) {
     let data = await this.redisProvider.smembers(REDIS_KEY);
     if (data.length > 0) {
-      return data.map(item => JSON.parse(item));
+      // return data.map(item => JSON.parse(item));
     }
-    data = await this.bannerRepo.find().sort({ uid: -1 });
-    data.map(item => {
-      this.redisProvider.sadd(REDIS_KEY, JSON.stringify(item));
-    });
+    const query: any = {};
+    if (req.query.title && req.query.title.trim().length > 0) {
+      query.title = { $regex: `${req.query.title}`, $options: "i" };
+    }
+    data = await this.bannerRepo.find(query).sort({ uid: -1 });
+    // data.map(item => {
+    //   this.redisProvider.sadd(REDIS_KEY, JSON.stringify(item));
+    // });
     return data;
   }
 

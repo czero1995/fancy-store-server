@@ -15,7 +15,7 @@ Router.post("/add", async (req, res) => {
 
 Router.get("/all", async (req, res) => {
   try {
-    const data = await bannerService.all();
+    const data = await bannerService.all(req);
     return res.json({ code: 0, data });
   } catch (err) {
     return res.json(err);

@@ -33,16 +33,20 @@ export default class CategoryService {
     await this.redisProvider.sadd(REDIS_KEY, JSON.stringify(data));
     await this.redisProvider.expire(REDIS_KEY, 3600);
 
-    return { code: 0, msg: "添加成功" };
+    return { code: 0, data };
   }
 
-  public async all() {
+  public async all(req) {
     let data = await this.redisProvider.smembers(REDIS_KEY);
     if (data.length > 0) {
       // return data.map(item => JSON.parse(item));
     }
+    const query: any = {};
+    if (req.query.title && req.query.title.trim().length > 0) {
+      query.title = { $regex: `${req.query.title}`, $options: "i" };
+    }
 
-    data = await this.categoryRepo.find().sort({ order: -1 });
+    data = await this.categoryRepo.find(query).sort({ order: -1 });
     data.map(item => {
       this.redisProvider.zadd(REDIS_KEY, JSON.stringify(item));
     });
@@ -70,17 +74,18 @@ export default class CategoryService {
     return { code: 0, msg: "更新成功" };
   }
 
+  public async detail(req): Promise<any> {
+    checkUid(req.query.uid, "请传入分类 uid");
+
+    const data = await this.categoryRepo.findOne({ uid: req.query.uid });
+    return data;
+  }
+
   public async delete(req) {
     checkUid(req.body.uid, "请传入分类uid");
 
     await this.categoryRepo.deleteOne({ uid: req.body.uid });
-    const redisData = await this.redisProvider.smembers(REDIS_KEY);
-    redisData.map(item => {
-      item = JSON.parse(item);
-      if (item.uid === req.body.uid) {
-        this.redisProvider.srem(REDIS_KEY, JSON.stringify(item));
-      }
-    });
+
     return { code: 0, msg: "删除成功" };
   }
 }

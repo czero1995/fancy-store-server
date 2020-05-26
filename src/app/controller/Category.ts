@@ -15,7 +15,7 @@ Router.post("/add", async (req, res) => {
 
 Router.get("/all", async (req, res) => {
   try {
-    const data = await categoryService.all();
+    const data = await categoryService.all(req);
     return res.json({ code: 0, data });
   } catch (err) {
     return res.json(err);
@@ -26,6 +26,15 @@ Router.post("/update", async (req, res) => {
   try {
     const data = await categoryService.update(req);
     return res.json(data);
+  } catch (err) {
+    return res.json(err);
+  }
+});
+
+Router.get("/detail", async (req, res) => {
+  try {
+    const data = await categoryService.detail(req);
+    return res.json({ code: 0, data });
   } catch (err) {
     return res.json(err);
   }

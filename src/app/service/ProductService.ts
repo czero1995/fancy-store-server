@@ -31,7 +31,7 @@ export default class ProductService {
     paramsInfo.updated = Date.now();
     const model = await new this.productRepo(paramsInfo);
     await model.save();
-    return { code: 0, msg: "添加成功" };
+    return { code: 0, data: paramsInfo };
   }
 
   public async all(req): Promise<any[]> {
