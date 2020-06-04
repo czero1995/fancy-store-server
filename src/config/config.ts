@@ -18,6 +18,15 @@ export default {
     UptokenUrl: "fancy-store",
     Domain: "http://qiniu.fancystore.cn/"
   },
+  wx: {
+    APPID: "微信appid",
+    SECRET: "微信secret",
+    signatureToken: "fancystore"
+  },
+  wxWeb: {
+    APPID: "微信appid",
+    SECRET: "微信secret"
+  },
   redis: "redis://localhost:6379",
   REDIS_PRODECT_PREFIX: "fancystore"
 };

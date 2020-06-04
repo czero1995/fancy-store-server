@@ -35,4 +35,12 @@ Router.post("/applet/login", async (req, res) => {
   }
 });
 
+Router.get("/web/login", async (req, res) => {
+  try {
+    const data = await wxService.webLogin(req);
+    return res.json(data);
+  } catch (err) {
+    return res.json(err);
+  }
+});
 export default Router;

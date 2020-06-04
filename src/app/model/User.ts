@@ -12,6 +12,7 @@ const UserSchema = new mongoose.Schema({
   address: { type: Array },
   wxUnionID: { type: String },
   wxAppletOpenId: { type: String },
+  wxWebOpenId: { type: String },
   session_key: { type: String },
   created: { type: Date, required: true },
   updated: { type: Date, required: true }

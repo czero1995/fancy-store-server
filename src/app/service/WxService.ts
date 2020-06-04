@@ -16,6 +16,7 @@ export default class WxService {
     const res = await axios.get(
       `https://api.weixin.qq.com/sns/jscode2session?appid=${config.wx.APPID}&secret=${config.wx.SECRET}&js_code=${body.code}&grant_type=authorization_code`
     );
+    console.log("res: ", res);
     if (res.status === 200) {
       const userInfo = body.userInfo;
       const paramInfo: any = {};
@@ -75,5 +76,58 @@ export default class WxService {
       10000
     );
     return sessionID;
+  }
+
+  public async webLogin(req) {
+    const paramInfo: any = {};
+    const code = req.query.code;
+    const res = await axios.get(
+      `https://api.weixin.qq.com/sns/oauth2/access_token?appid=${config.wxWeb.APPID}&secret=${config.wxWeb.SECRET}&code=${code}&grant_type=authorization_code`
+    );
+    console.log("res:data ", res.data);
+    let access_token = res.data.access_token;
+    let wxWebOpenId = res.data.openid;
+    const data = await axios.get(
+      `https://api.weixin.qq.com/sns/userinfo?access_token=${access_token}&openid=${wxWebOpenId}`
+    );
+    const wxUnionID = data.data.unionid;
+    console.log("data: ", data.data);
+
+    if (wxWebOpenId) {
+      let openIdToUserInfo = await this.userRepo.findOne({ wxWebOpenId });
+      if (openIdToUserInfo) {
+        console.log("数据库有webOpenId");
+        if (!openIdToUserInfo.wxUnionID && wxUnionID) {
+          paramInfo.wxUnionID = wxUnionID;
+          openIdToUserInfo = await this.userRepo.findOneAndUpdate(
+            { wxWebOpenId },
+            paramInfo,
+            { new: true }
+          );
+        }
+      }
+
+      if (wxUnionID) {
+        console.log("数据库有unionId");
+        const wxUnionIdToUserInfo = await this.userRepo.findOne({ wxUnionID });
+        if (wxUnionIdToUserInfo) {
+          paramInfo.wxWebOpenId = wxWebOpenId;
+          paramInfo.sessionId = this.setLoginSession(paramInfo.uid);
+          return this.userRepo.findOneAndUpdate({ wxUnionID }, paramInfo, {
+            new: true
+          });
+        }
+      }
+
+      console.log("添加新用户");
+      paramInfo.wxWebOpenId = wxWebOpenId;
+      paramInfo.wxUnionID = wxUnionID;
+      paramInfo.created = new Date();
+      paramInfo.uid = await UidHelper("User");
+      const model = await new this.userRepo(paramInfo);
+      await model.save();
+      paramInfo.sessionId = this.setLoginSession(paramInfo.uid);
+      return paramInfo;
+    }
   }
 }
