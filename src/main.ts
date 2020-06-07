@@ -5,7 +5,7 @@ import connect from "@lib/mongoose";
 import sessionRedisMiddleware from "@middleware/SessionRedisMiddleware";
 import connectMiddleware from "@middleware/ConnectMiddleware";
 import loginMiddleWare from "@middleware/LoginMiddleWare";
-import authMiddleWare from "@middleware/AuthMiddleWare";
+import authMiddleWare from "@middleware/AuthMiddleware";
 import chalk from "chalk";
 import cors from "cors";
 // import logger from '@lib/logger'

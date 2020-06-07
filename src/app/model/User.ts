@@ -2,6 +2,7 @@
 import mongoose from "mongoose";
 const UserSchema = new mongoose.Schema({
   uid: { type: Number, index: true, unique: true },
+  roles: { type: Array }, // 角色id :[0:访客,1:超级管理员]
   nickName: { type: String },
   user: { type: String, require: true },
   pwd: { type: String, require: true },
@@ -14,6 +15,7 @@ const UserSchema = new mongoose.Schema({
   wxAppletOpenId: { type: String },
   wxWebOpenId: { type: String },
   session_key: { type: String },
+  sessionId: { type: String },
   created: { type: Date, required: true },
   updated: { type: Date, required: true }
 });

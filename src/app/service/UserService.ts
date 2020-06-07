@@ -72,10 +72,11 @@ export default class UserService {
         uid: 1,
         nickName: 1,
         user: 1,
-        avataUrl: 1,
+        avatarUrl: 1,
         gender: 1,
         created: 1,
-        updated: 1
+        updated: 1,
+        roles: 1
       }
     );
     return { code: 0, data };
