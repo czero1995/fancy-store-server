@@ -62,6 +62,31 @@ export default class OrderService {
     return data;
   }
 
+  public async pre(req) {
+    let body = req.body;
+    let amount = 0;
+    if (!body.items || body.items.length == 0) {
+      return { code: -1, msg: "参数错误" };
+    }
+    let res = await this.productRepo
+      .find(
+        { uid: { $in: body.items.map(item => item.uid) } },
+        { detailInfo: 0 }
+      )
+      .lean(true);
+    res.forEach(item => {
+      body.items.map(itemChild => {
+        if ((item.uid = itemChild.uid)) {
+          item.num = itemChild.num;
+          amount = amount + item.num * item.priceNow;
+        }
+      });
+      return item;
+    });
+    console.log("items", res);
+    return { code: 0, data: { items: res, amount } };
+  }
+
   public async update(req) {
     checkUid(req.body.uid, "请传入用户uid");
     await this.orderRepo.findOneAndUpdate(

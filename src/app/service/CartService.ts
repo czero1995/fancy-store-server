@@ -23,6 +23,7 @@ export default class CartService {
     }
     paramsInfo.uid = await UidHelper("Cart");
     paramsInfo.userId = userId;
+    paramsInfo.isChoice = true;
     paramsInfo.productId = req.body.productId;
     paramsInfo.created = Date.now();
     paramsInfo.updated = Date.now();
@@ -44,6 +45,18 @@ export default class CartService {
       isExist.save();
       return { code: 0, msg: "减少成功" };
     }
+  }
+
+  public async choice(req) {
+    const paramsInfo = req.body;
+    const userId = decrypt(req.headers.sessionid);
+    const res = await this.cartRepo.findOne({
+      productId: paramsInfo.productId,
+      userId
+    });
+    res.isChoice = paramsInfo.isChoice;
+    res.save();
+    return { code: 0, msg: "操作成功" };
   }
 
   public async delete(req) {

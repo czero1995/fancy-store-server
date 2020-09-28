@@ -22,6 +22,15 @@ Router.get("/all", async (req, res) => {
   }
 });
 
+Router.post("/pre", async (req, res) => {
+  try {
+    const data = await orderService.pre(req);
+    return res.json(data);
+  } catch (err) {
+    return res.json(err);
+  }
+});
+
 Router.post("/update", async (req, res) => {
   try {
     const data = await orderService.update(req);
